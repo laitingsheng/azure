@@ -5,7 +5,9 @@ locals {
   ]
 
   spfs = [
+    "hotmail.com",
     "icloud.com",
+    "outlook.com",
   ]
 }
 
@@ -61,6 +63,13 @@ resource "azurerm_dns_txt_record" "io" {
           "apple-domain=2NM29GAOQxCwLa1y",
           "MS=ms32071162",
           "v=spf1 ${join(" ", [for spf in local.spfs : "include:${spf}"])} -all",
+        ]
+      },
+      {
+        name = "_dmarc"
+
+        records = [
+          "v=DMARC1;p=reject;aspf=s;adkim=r;"
         ]
       },
     ] : (obj.name) => obj
@@ -132,6 +141,13 @@ resource "azurerm_dns_txt_record" "ai" {
           "apple-domain=aHPHnTrksmYjFMlY",
           "MS=ms59054622",
           "v=spf1 ${join(" ", [for spf in local.spfs : "include:${spf}"])} -all",
+        ]
+      },
+      {
+        name = "_dmarc"
+
+        records = [
+          "v=DMARC1;p=reject;aspf=s;adkim=r;"
         ]
       },
     ] : (obj.name) => obj
